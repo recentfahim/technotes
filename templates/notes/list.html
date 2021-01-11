@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Technote - Note List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for note in notes %}
+    <tr>
+      <th scope="row">{{ note.id }}</th>
+      <td>{{  note.title }}</td>
+      <td>{{ note.description }}</td>
+      <td>Update | Delete</td>
+    </tr>
+  {% endfor %}
+</table>
+</div>
+
+</body>
+</html>
