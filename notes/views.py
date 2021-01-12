@@ -103,3 +103,8 @@ class ShareWithMe(View):
         }
 
         return render(request, 'notes/share_with_me.html', context=context)
+
+
+class Home(View):
+    def get(self, request):
+        return render(request, 'home.html')
