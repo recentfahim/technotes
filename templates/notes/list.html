@@ -22,7 +22,16 @@
       <th scope="row">{{ note.id }}</th>
       <td>{{  note.title }}</td>
       <td>{{ note.description }}</td>
-      <td>Update | Delete</td>
+        <td>
+            <div>
+                <a href="{% url 'edit_note' id=note.id %}">
+                    <button class="btn btn-primary">Edit</button>
+                </a>
+                <a href="{% url 'delete_note' id=note.id %}">
+                    <button class="btn btn-danger">Delete</button>
+                </a>
+            </div>
+        </td>
     </tr>
   {% endfor %}
 </table>
