@@ -121,3 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGOUT_REDIRECT_URL = '/user/login'
+LOGIN_URL = '/user/login'
+LOGIN_REDIRECT_URL = '/note/list/'
