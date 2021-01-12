@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 
@@ -18,10 +18,23 @@ class Login(View):
         if user:
             login(request, user)
             messages.success(request, "Logged in Successfully")
-            return redirect('list_note')
+            return redirect('home')
         else:
             messages.error(request, "The provided username or  password is wrong!!")
             return redirect('login')
+
+
+class LogOut(View):
+    def get(self, request):
+        user = request.user
+        if user:
+            logout(request)
+            messages.success(request, "Logged in Successfully!!")
+
+            return redirect('/user/login/')
+        else:
+            messages.error(request, "Something went wrong!!")
+            return redirect('home')
 
 
 class Register(View):
