@@ -15,7 +15,10 @@ class CreateNote(View):
     def post(self, request):
         user = request.user
         data = request.POST
-        Note.objects.create(user=user, title=data.get('title'), description=data.get('description'))
+        note = Note.objects.create(user=user, title=data.get('title'), description=data.get('description'))
+        assign_perm('notes.view_note', user, note)
+        assign_perm('notes.change_note', user, note)
+        assign_perm('notes.delete_note', user, note)
         messages.success(request, "Note created Successfully")
 
         return redirect('list_note')
@@ -32,21 +35,29 @@ class DeleteNote(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         note = Note.objects.filter(user=user, id=kwargs.get('id')).first()
-        note.delete()
-        messages.success(request, "Note deleted Successfully")
+        if note and user.has_perm('notes.delete_note', note):
+            note.delete()
+            messages.success(request, "Note deleted Successfully")
 
-        return redirect('list_note')
+            return redirect('list_note')
+        else:
+            messages.error(request, "You don't have permission to delete this note!!")
+            return redirect('list_note')
 
 
 class EditNote(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         note = Note.objects.filter(user=user, id=kwargs.get('id')).first()
-        context = {
-            'note': note
-        }
+        if note and user.has_perm('notes.change_note', note):
+            context = {
+                'note': note
+            }
 
-        return render(request, 'notes/create.html', context=context)
+            return render(request, 'notes/create.html', context=context)
+        else:
+            messages.error(request, "You don't have permission to edit this note!!")
+            return redirect('list_note')
 
     def post(self, request, *args, **kwargs):
         data = request.POST
@@ -64,11 +75,15 @@ class ViewNote(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         note = Note.objects.filter(id=kwargs.get('id')).first()
-        context = {
-            'note': note
-        }
+        if note and user.has_perm('notes.view_note', note):
+            context = {
+                'note': note
+            }
 
-        return render(request, 'notes/view.html', context=context)
+            return render(request, 'notes/view.html', context=context)
+        else:
+            messages.error(request, "You don't have permission to edit this note!!")
+            return redirect('list_note')
 
     def post(self, request, *args, **kwargs):
         user = request.user
