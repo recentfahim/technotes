@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 
 UserModel = get_user_model()
@@ -16,8 +17,10 @@ class Login(View):
         user = authenticate(request, username=data.get('email'), password=data.get('password'))
         if user:
             login(request, user)
+            messages.success(request, "Logged in Successfully")
             return redirect('list_note')
         else:
+            messages.error(request, "The provided username or  password is wrong!!")
             return redirect('login')
 
 
@@ -28,11 +31,13 @@ class Register(View):
     def post(self, request, *args, **kwargs):
         data = request.POST
         if UserModel.objects.filter(username=data.get('username'), email=data.get('email')).exists():
+            messages.error(request, "The username or email already exist!!")
             return redirect('register')
         user = UserModel.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
         if user:
-            login(request, user)
-            return redirect('list_note')
+            messages.success(request, "Registered Successfully, Please login!!")
+            return redirect('login')
         else:
+            messages.error(request, "Something went wrong!!")
             return redirect('register')
 

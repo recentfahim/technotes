@@ -3,6 +3,7 @@ from django.views import View
 from .models import Note
 from django.contrib.auth import get_user_model
 from guardian.shortcuts import assign_perm
+from django.contrib import messages
 
 UserModel = get_user_model()
 
@@ -15,6 +16,7 @@ class CreateNote(View):
         user = request.user
         data = request.POST
         Note.objects.create(user=user, title=data.get('title'), description=data.get('description'))
+        messages.success(request, "Note created Successfully")
 
         return redirect('list_note')
 
@@ -31,6 +33,7 @@ class DeleteNote(View):
         user = request.user
         note = Note.objects.filter(user=user, id=kwargs.get('id')).first()
         note.delete()
+        messages.success(request, "Note deleted Successfully")
 
         return redirect('list_note')
 
@@ -52,6 +55,7 @@ class EditNote(View):
         note.title = data.get('title')
         note.description = data.get('description')
         note.save()
+        messages.success(request, "Note updated Successfully")
 
         return redirect('list_note')
 
@@ -74,10 +78,14 @@ class ViewNote(View):
             shared_user = UserModel.objects.filter(email=data.get('email')).first()
             if shared_user:
                 assign_perm('notes.view_note', shared_user, note)
+                messages.success(request, "Share with " + shared_user.email + " successfully")
+                return redirect('list_note')
             else:
-                pass
-            return redirect('list_note')
+                messages.error(request, "User email doesn't exist!!")
+                return redirect('view_note', id=note.id)
+
         else:
+            messages.error(request, "Note not found!!")
             return redirect('list_note')
 
 
