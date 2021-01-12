@@ -1,44 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Technote - Note List</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-<body>
-<div class="container">
-    <table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Title</th>
-      <th scope="col">Description</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for note in notes %}
-    <tr>
-      <th scope="row">{{ note.id }}</th>
-      <td>{{  note.title }}</td>
-      <td>{{ note.description }}</td>
-        <td>
-            <div>
-                <a href="{% url 'view_note' id=note.id %}">
-                    <button class="btn btn-primary">View</button>
-                </a>
-                <a href="{% url 'edit_note' id=note.id %}">
-                    <button class="btn btn-primary">Edit</button>
-                </a>
-                <a href="{% url 'delete_note' id=note.id %}">
-                    <button class="btn btn-danger">Delete</button>
-                </a>
-            </div>
-        </td>
-    </tr>
-  {% endfor %}
-</table>
-</div>
+{% extends 'base.html' %}
+{% block title %}Note List{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <h4 class="mt-3 mb-3 text-center">Note List</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for note in notes %}
+                <tr>
+                    <th scope="row">{{ note.id }}</th>
+                    <td>{{ note.title }}</td>
+                    <td>{{ note.description }}</td>
+                    <td>
+                        <div>
+                            <a href="{% url 'view_note' id=note.id %}">
+                                <button class="btn btn-primary">View</button>
+                            </a>
+                            <a href="{% url 'edit_note' id=note.id %}">
+                                <button class="btn btn-primary">Edit</button>
+                            </a>
+                            <a href="{% url 'delete_note' id=note.id %}">
+                                <button class="btn btn-danger">Delete</button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load guardian_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tech Note || {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">TechNote</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="{% url 'list_note' %}">Note List</a></li>
+            <li><a href="{% url 'create_note' %}">Note Create</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{ user.email }}</a></li>
+                <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>
+            {% else %}
+                <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<div class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-center">Tech Note</h3>
+            {% include 'message.html' %}
+        </div>
+        <div class="card-body">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
