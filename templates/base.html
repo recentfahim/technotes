@@ -17,6 +17,7 @@
         <ul class="nav navbar-nav">
             <li><a href="{% url 'list_note' %}">Note List</a></li>
             <li><a href="{% url 'create_note' %}">Note Create</a></li>
+            <li><a href="{% url 'share_with_me_note' %}">Shared With Me</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}

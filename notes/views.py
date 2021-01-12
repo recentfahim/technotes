@@ -79,3 +79,19 @@ class ViewNote(View):
             return redirect('list_note')
         else:
             return redirect('list_note')
+
+
+class ShareWithMe(View):
+    def get(self, request):
+        user = request.user
+        notes = Note.objects.all().exclude(user=user)
+        shared_notes = []
+        for note in notes:
+            if user.has_perm('notes.view_note', note):
+                shared_notes.append(note)
+
+        context = {
+            'notes': shared_notes
+        }
+
+        return render(request, 'notes/share_with_me.html', context=context)
