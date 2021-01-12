@@ -17,7 +17,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 AUTH_USER_MODEL = 'users.CustomUser'
-AUTHENTICATION_BACKENDS = ['users.managers.EmailBackend']
+AUTHENTICATION_BACKENDS = (
+    'users.managers.EmailBackend',
+    'guardian.backends.ObjectPermissionBackend'
+)
 
 # Application definition
 
@@ -30,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'notes',
+    'guardian',
 ]
 
 MIDDLEWARE = [

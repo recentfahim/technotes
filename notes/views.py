@@ -50,3 +50,15 @@ class EditNote(View):
         note.save()
 
         return redirect('list_note')
+
+
+class ViewNote(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        note = Note.objects.filter(id=kwargs.get('id')).first()
+        context = {
+            'note': note
+        }
+
+        return render(request, 'notes/view.html', context=context)
+
