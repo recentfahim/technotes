@@ -12,21 +12,36 @@
 
     {% if "view_note" in notes_perms %}
         <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Title</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">{{ note.id }}</th>
-          <td>{{  note.title }}</td>
-          <td>{{ note.description }}</td>
-        </tr>
-      </tbody>
-</table>
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">{{ note.id }}</th>
+                  <td>{{  note.title }}</td>
+                  <td>{{ note.description }}</td>
+                </tr>
+              </tbody>
+        </table>
+        {% if note.user == request.user %}
+            <div>
+
+                <h3>Share With</h3>
+                <form method="post">
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <input type="email" class="form-control" placeholder="Enter email" name="email">
+                    </div>
+                    <a href="{% url 'view_note' id=note.id %}">
+                        <button type="submit" class="btn btn-success">Share</button>
+                    </a>
+                </form>
+            </div>
+        {% endif %}
     {% else %}
         <div>No permission</div>
     {% endif %}

@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import Note
+from django.contrib.auth import get_user_model
+from guardian.shortcuts import assign_perm
+
+UserModel = get_user_model()
 
 
 class CreateNote(View):
@@ -62,3 +66,16 @@ class ViewNote(View):
 
         return render(request, 'notes/view.html', context=context)
 
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        data = request.POST
+        note = Note.objects.filter(user=user, id=kwargs.get('id')).first()
+        if note:
+            shared_user = UserModel.objects.filter(email=data.get('email')).first()
+            if shared_user:
+                assign_perm('notes.view_note', shared_user, note)
+            else:
+                pass
+            return redirect('list_note')
+        else:
+            return redirect('list_note')
