@@ -6,5 +6,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('note/', include('notes.urls')),
     path('user/', include('users.urls')),
+    path('api/v1/', include('users.api.urls')),
     path('', Home.as_view(), name='home'),
 ]
