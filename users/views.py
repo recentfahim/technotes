@@ -43,8 +43,8 @@ class Register(View):
 
     def post(self, request, *args, **kwargs):
         data = request.POST
-        if UserModel.objects.filter(username=data.get('username'), email=data.get('email')).exists():
-            messages.error(request, "The username or email already exist!!")
+        if UserModel.objects.filter(email=data.get('email')).exists():
+            messages.error(request, "The email already exist!!")
             return redirect('register')
         user = UserModel.objects.create_user(data.get('username'), data.get('email'), data.get('password'))
         if user:
